@@ -12,10 +12,18 @@ export function AppContextProvider({ children }) {
 
     //functionality addition in order to fill data in there state variables
 
-    async function fetchData(page = 1) {
+    async function fetchData(page = 1, tag = null, category) {
         setLoading(true)
         try {
+            //normal url
             let url = `${baseUrl}?page=${page}`
+            //abb yeh normal url change ho sakta hai agar humare pass tag ya category present hai is phele tag aor category ko mangwa liya fetchData function me
+            if (tag) {
+                url += `&tag=${tag}`
+            }
+            if (category) {
+                url += `&category=${category}`
+            }
             console.log(url);
             const response = await axios.get(url)
             const output = response.data;
@@ -36,6 +44,7 @@ export function AppContextProvider({ children }) {
 
 
     //jab next ya previous ka button press karte hain toh data of blogs ,context ka yeh handlePageChange vala function lata hai 
+    //hume abb page,category aor tags sabb pass karne padenge
     function handlePageChange(page) {
         setPage(page)
         fetchData(page)
