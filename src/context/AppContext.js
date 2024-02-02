@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { baseUrl } from "../baseUrl";
 import axios from "axios";
 export const AppContext = createContext();
@@ -16,8 +16,11 @@ export function AppContextProvider({ children }) {
         setLoading(true)
         try {
             let url = `${baseUrl}?page=${page}`
-            const output = await axios.get(url)
+            console.log(url);
+            const response = await axios.get(url)
+            const output = response.data;
             console.log(output);
+
             setPage(output.page)
             setTotalPages(output.totalPages)
             setPost(output.posts)
@@ -31,7 +34,8 @@ export function AppContextProvider({ children }) {
         setLoading(false)
     }
 
-    //jab next ya previous ka button press karte hain toh data contextka yeh handlePageChange vala function lata hai 
+
+    //jab next ya previous ka button press karte hain toh data of blogs ,context ka yeh handlePageChange vala function lata hai 
     function handlePageChange(page) {
         setPage(page)
         fetchData(page)
@@ -43,7 +47,7 @@ export function AppContextProvider({ children }) {
 
 
     //yeh send vo sara data hai jo eksath components ko bhejna hai iss context se
-    const send = {
+    const value = {
         loading,
         posts,
         page,

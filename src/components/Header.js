@@ -1,8 +1,9 @@
 import React from "react";
+
 function Header() {
     return (
         <div>
-            App
+            <h1>Technical Blogs</h1>
         </div>
     );
 }
