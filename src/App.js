@@ -12,7 +12,7 @@ function App() {
     fetchData()
   }, [])
   return (
-    <div className="App">
+    <div className="w-full h-full flex flex-col gap-y-1 justify-center items-center">
       <Header />
       {
         loading ? (<Spinner />) : (<Blogs />)
