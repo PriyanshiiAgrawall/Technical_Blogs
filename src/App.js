@@ -1,10 +1,10 @@
 
 import { useContext, useEffect } from 'react';
 import './App.css';
-import Blogs from './components/Blogs';
-import Header from './components/Header';
-import Spinner from './components/Spinner';
-import PageInation from './components/Pageination';
+// import Blogs from './components/Blogs';
+// import Header from './components/Header';
+// import Spinner from './components/Spinner';
+// import PageInation from './components/Pageination';
 import { AppContext } from './context/AppContext';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { Route } from 'react-router-dom';
@@ -26,7 +26,7 @@ function App() {
       fetchData(Number(page), tag)
     }
     //for category
-    else if (location.pathname.includes("category")) {
+    else if (location.pathname.includes("categories")) {
       const category = location.pathname.split("/").at(-1).replace("-", " ")
       fetchData(Number(page), null, category)
     }

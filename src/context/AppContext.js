@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { baseUrl } from "../baseUrl";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 export function AppContextProvider({ children }) {
@@ -9,24 +10,30 @@ export function AppContextProvider({ children }) {
     const [posts, setPost] = useState([])
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(null)
-
+    const navigate = useNavigate()
     //functionality addition in order to fill data in there state variables
 
     async function fetchData(page = 1, tag = null, category) {
         setLoading(true)
+        //normal url
+        let url = `${baseUrl}?page=${page}`
+        //abb yeh normal url change ho sakta hai agar humare pass tag ya category present hai is phele tag aor category ko mangwa liya fetchData function me
+        if (tag) {
+            url += `&tag=${tag}`
+            console.log(url);
+        }
+        if (category) {
+            url += `&category=${category}`
+            console.log(url);
+        }
         try {
-            //normal url
-            let url = `${baseUrl}?page=${page}`
-            //abb yeh normal url change ho sakta hai agar humare pass tag ya category present hai is phele tag aor category ko mangwa liya fetchData function me
-            if (tag) {
-                url += `&tag=${tag}`
-            }
-            if (category) {
-                url += `&category=${category}`
-            }
+
+
             console.log(url);
             const response = await axios.get(url)
             const output = response.data;
+            if (!output.posts || output.posts.length === 0)
+                throw new Error("Something Went Wrong");
             console.log(output);
 
             setPage(output.page)
@@ -46,8 +53,8 @@ export function AppContextProvider({ children }) {
     //jab next ya previous ka button press karte hain toh data of blogs ,context ka yeh handlePageChange vala function lata hai 
     //hume abb page,category aor tags sabb pass karne padenge
     function handlePageChange(page) {
+        navigate({ search: `?page=${page}` });
         setPage(page)
-        fetchData(page)
     }
 
 

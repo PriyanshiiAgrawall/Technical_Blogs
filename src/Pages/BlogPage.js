@@ -12,14 +12,17 @@ function BlogPage() {
     const navigate = useNavigate()
     const location = useLocation()
     const { loading, setLoading } = useContext(AppContext)
-    let blogId = location.pathname.split('/').at[-1]
-
+    let blogId = location.pathname.split('/').at(-1)
+    const newBaseUrl = "https://codehelp-apis.vercel.app/api/";
     async function fetchBlogData() {
         setLoading(true)
+        let blogUrl = `${newBaseUrl}get-blog?blogId=${blogId}`;
+
         try {
 
-            const blogUrl = `${baseUrl}?blogId=${blogId}`
-            const output = await axios.get(blogUrl).data
+            // const blogUrl = `${baseUrl}?blogId=${blogId}`
+            const response = await axios.get(blogUrl)
+            const output = response.data;
             console.log(output);
             setCurrentBlog(output.blog)
             setRelatedBlogs(output.relatedBlogs)
@@ -42,24 +45,30 @@ function BlogPage() {
     return (
 
 
-        <div>
-            <button onClick={() => navigate(-1)} className="mt-[100px]">Back</button>
+        <div >
+
             <Header />
-            {loading ? (<Spinner />) : (
-                currentBlog ? (<Card currentBlog={currentBlog} />
-                ) : (<p>No Blogs Found</p>)
-            )}
-            <h1>Related Blogs</h1>
-            {
-                relatedBlogs.length === 0 ?
-                    (<div><p>No Related Blogs Found</p></div>)
-                    :
-                    (relatedBlogs.map((blog) => (<div key={blog.id}><Card post={blog} /></div>)))
-            }
+            <div>
+                <button onClick={() => navigate(-1)} className="mt-[110px] border-4 rounded-md px-4 py-1 mx-[20px] mb-[20px]" >Back</button></div><div className="mt-[-5px]" >
+
+                {loading ? (<Spinner />) :
+                    (
+                        currentBlog ?
+                            (
+                                <div>
+                                    <Card post={currentBlog} />
+                                    <h1 className="font-bold text-[28px] my-[20px] underline">Related Blogs</h1>
+                                    {relatedBlogs.map((blog) => (<div key={blog.id}><Card post={blog} /></div>))}
+                                </div>)
+                            :
+                            (<p>No Blogs Found</p>)
 
 
+                    )}
 
-        </div>
+            </div>
+
+        </div >
     );
 }
 

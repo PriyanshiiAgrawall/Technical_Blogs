@@ -11,7 +11,7 @@ function Blogs() {
                 posts.length === 0 ?
                     (<div><p>No Posts Found</p></div>)
                     :
-                    (posts.map((post) => (<div key={post.id}><Card post={post} /></div>)))
+                    (posts.map((post) => (<Card post={post} key={post.id} />)))
             }
         </div>
     )
